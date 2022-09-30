@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <title>Noia</title>
+    <meta charSet="utf-8" />
+    <meta name="viewport"
+        content="user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, width=device-width, height=device-height" />
+    <meta http-equiv="Accept-CH" content="DPR" />
+    <meta name="description" content="Find your favorite free online games. Play the best online games!" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="page" href="free-online-games.html">
+
+    <style>
+        #searchInput {
+            border: 2px solid #351c75;
+            border-radius: 100px;
+            background-color: #20124d;
+            color: white;
+            margin-left: 10px;
+            margin-top: 5px;
+            width: calc(100% - 30px);
+            height: 40px;
+            text-align: center;
+            font-family: Verdana, sans-serif;
+            font-size: 24px;
+            display: flex;
+            flex-direction: row;
+
+        }
+
+        @keyframes animacao1 {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        #resultArea {
+            position: relative;
+            display: flex;
+            flex-flow: row wrap;
+            align-content: flex-start;
+            margin-top: 10px;
+            width: 100%;
+            height: 100%;
+            /*border: 2px solid rgb(150, 152, 157);*/
+
+
+        }
+
+        .game {
+
+            position: relative;
+            flex: 0 1 1;
+            animation: animacao1 1s;
+            margin: 4px;
+            border: 2px solid rgb(35, 37, 40);
+
+            width: 160px;
+            /* tamanho do quadrado*/
+            height: 180px;
+            /* tamanho do quadrado*/
+            background: black;
+            cursor: pointer;
+        }
+
+
+
+
+
+
+
+
+        .game img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .adsbygoogle {
+            width: 100%;
+            height: 100%;
+
+        }
+
+
+        #footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 50px;
+            background: #20124d;
+        }
+
+        p {
+            color: white;
+            text-align: right;
+            font-family: Verdana, sans-serif;
+            margin: 10px;
+
+        }
+    </style>
+</head>
+
+
+
+<body style="background-image: url('https://i.pinimg.com/originals/da/06/07/da06070e6610eed218c124b384d80587.jpg'); 
+             background-image: url(10766.jpg);
+             background-repeat: no-repeat;
+             background-attachment: fixed;
+             background-size: cover;">
+    <input id="searchInput" placeholder="Play your favorite online games">
+    <div id="resultArea">
+    </div>
+
+    <div id="footer">
+        <p class="footer-text">
+        <p>Made with ❤️ by João and Inês</p>
+        </p>
+
+</body>
+
+</html>
+
+<script>
+
+
+    window.onload = function () {
+        var l = document.getElementById("aaa");
+        console.log(l.display);
+    }
+
+    document.getElementById("searchInput").onkeypress = function (x) {
+        if (x.key == "Enter") {
+            processSearch();
+        }
+    };
+
+    _myGames = [];
+
+    function processSearch() {
+        var text = document.getElementById("searchInput").value;
+        getJSON(text);
+    }
+
+    function getJSON(searchText) {
+        fetch("./api.php?text=" + searchText).then(function (response) {
+            if (response.ok) {
+                response.json().then(function (json) {
+                    _myGames = json;
+                    renderGames();
+                });
+            } else {
+                // Error
+            }
+        });
+    }
+
+
+    function renderGames() {
+        var resultArea = document.getElementById("resultArea");
+        resultArea.innerHTML = '';
+        _myGames.forEach(x => {
+            var dv = document.createElement("div"); dv.className = "game"; dv.setAttribute("onclick", "window.open('" + x.url + "', '_blank')");
+            var img = document.createElement("img"); img.src = x.img;
+            dv.appendChild(img);
+            resultArea.appendChild(dv);
+        });
+    }
+</script>
